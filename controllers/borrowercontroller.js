@@ -4,6 +4,7 @@ const Book = require('../models/Book');
 exports.addBorrower = async (req, res) => {
   try {
     const { name, membershipType, membershipActive } = req.body;
+    //adding these fields in body 
     const borrower = new Borrower({
       name,
       membershipType,
@@ -21,7 +22,7 @@ exports.updateBorrower = async (req, res) => {
   try {
     const { id } = req.params;
     const updates = req.body;
-    
+    //find the book by mongoose created _id
     const borrower = await Borrower.findById(id);
     if (!borrower) {
       return res.status(404).json({ message: 'Borrower not found' });
@@ -47,7 +48,7 @@ exports.updateBorrower = async (req, res) => {
 exports.borrowBook = async (req, res) => {
   try {
     const { borrowerId, bookId } = req.body;
-    
+    //finding the borrowerId and bookId to borrow the book
     const borrower = await Borrower.findById(borrowerId)
       .populate('borrowedBooks.book');
     const book = await Book.findById(bookId);

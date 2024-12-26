@@ -6,7 +6,7 @@ exports.addBook = async (req, res) => {
       const { title, author, isbn, availableCopies } = req.body;
   
       // Check if author exists and hasn't exceeded book limit
-      const foundAuthor = await Author.findById(author); // Find by MongoDB _id directly
+      const foundAuthor = await Author.findById(author); 
       if (!foundAuthor) {
         return res.status(404).json({ message: 'Author not found' });
       }
@@ -16,7 +16,7 @@ exports.addBook = async (req, res) => {
   
       const book = new Book({
         title,
-        author: foundAuthor._id, // Assign the author's _id
+        author: foundAuthor._id, 
         isbn,
         availableCopies,
       });
@@ -50,7 +50,7 @@ exports.updateBook = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-// Add this to controllers/bookController.js
+
 
 exports.deleteBook = async (req, res) => {
     try {
@@ -80,7 +80,7 @@ exports.deleteBook = async (req, res) => {
         );
 
         // Delete the book
-        await Book.findByIdAndDelete(id); // Corrected method for deleting the book
+        await Book.findByIdAndDelete(id); 
 
         res.json({ message: 'Book deleted successfully' });
     } catch (error) {

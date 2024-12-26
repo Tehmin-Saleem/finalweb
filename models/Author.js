@@ -21,6 +21,7 @@ const authorSchema = new mongoose.Schema({
     phoneNumber: {
       type: String,
       required: true,
+      //functon to check the valid phone number
       validate: {
         validator: function(v) {
           return /^\+?[\d\s-]{10,}$/.test(v);
