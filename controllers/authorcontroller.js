@@ -36,25 +36,28 @@ exports.updateAuthor = async (req, res) => {
 };
 
 exports.deleteAuthor = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const author = await Author.findById(id);
-    
-    if (!author) {
-      return res.status(404).json({ message: 'Author not found' });
+    try {
+      const { id } = req.params;
+      const author = await Author.findById(id);
+      
+      if (!author) {
+        return res.status(404).json({ message: 'Author not found' });
+      }
+  
+      // Check if author has any books
+      if (author.books.length > 0) {
+        return res.status(400).json({ message: 'Cannot delete author with associated books' });
+      }
+  
+      // Delete the author by _id
+      await Author.findByIdAndDelete(id);
+  
+      res.json({ message: 'Author deleted successfully' });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
     }
-
-    // Check if author has any books
-    if (author.books.length > 0) {
-      return res.status(400).json({ message: 'Cannot delete author with associated books' });
-    }
-
-    await author.remove();
-    res.json({ message: 'Author deleted successfully' });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-};
+  };
+  
 
 exports.getAuthorsExceedingBookLimit = async (req, res) => {
   try {
